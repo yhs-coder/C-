@@ -1,0 +1,4 @@
+﻿  Test.c
+D:\代码库\github\dynamic_memory_practice\dynamic_memory_practice\Test.c(153,8): warning C4013: “strcpy”未定义；假设外部返回 int
+D:\代码库\github\dynamic_memory_practice\dynamic_memory_practice\Test.c(164): warning C4172: 返回局部变量或临时变量的地址: p
+  dynamic_memory_practice.vcxproj -> D:\代码库\github\dynamic_memory_practice\x64\Debug\dynamic_memory_practice.exe

@@ -1,0 +1,4 @@
+﻿  Test.c
+D:\代码库\github\Structure\Structure\Test.c(265,9): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“size_t”
+D:\代码库\github\Structure\Structure\Test.c(265,9): message : 请考虑在格式字符串中使用“%zd”
+  Structure.vcxproj -> D:\代码库\github\Structure\x64\Debug\Structures.exe

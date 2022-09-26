@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#include<assert.h>
 /*
 	使用malloc、free
 */
@@ -49,7 +51,7 @@ void test2()
 
 void test3()
 {
-	int *ptr = (int*)malloc(10 * sizeof(int));
+	int* ptr = (int*)malloc(10 * sizeof(int));
 	if (ptr == NULL)
 	{
 		printf("Out of memory!");
@@ -223,12 +225,12 @@ void Test4(void)
 typedef struct st_type
 {
 	int i;
-	int a[0]; //柔性数组成员
-	//int a[]
+	int a[]; //柔性数组成员
+	//int a[0]
 }type_a;
 
 //柔性数组的使用
-void flexible_array() 
+void flexible_array()
 {
 	int i = 0;
 	type_a* p = (type_a*)malloc(sizeof(type_a) + 100 * sizeof(int));
@@ -243,15 +245,15 @@ void flexible_array()
 }
 
 //这种写法可代替柔性数组
-typedef struct st_type
+typedef struct st_type2
 {
 	int i;
 	int* p_a;
-}type_a;
+}type_b;
 void replace_flexible_array()
 {
 	int i = 0;
-	type_a* p = malloc(sizeof(type_a));
+	type_b* p = malloc(sizeof(type_b));
 	p->i = 100;
 	p->p_a = (int*)malloc(p->i * sizeof(int));
 	//业务处理
@@ -268,8 +270,188 @@ void replace_flexible_array()
 
 
 //柔性数组比较第二种代替写法：第一个好处是：方便内存释放。第二个好处是连续的内存有益于提高访问速度，也有益于减少内存碎片
+
+
+
+/*
+*	===============================
+	习题练习！
+*	===============================
+
+*/
+
+/*
+* 
+	练习1：
+	从标准输入读取一列由EOF结尾的整数，并返回一个包含这些值的动态分配的数组，
+	数组的第一个元素是数组所含的值的数量，其余元素为输入的整数值
+
+*/
+#define DETAL 10  //detal表示增量
+int* ReadInts()
+{
+	int value;	//读取的整数
+	int count = 0;	//计数
+	int* array;	//存放一列整数的数组
+	int size;	//表示数组的大小
+
+	/*
+		获得最初的数组，大小足以容纳DETAL个值
+	*/
+	size = DETAL;
+	array = (int*)malloc((size + 1) * sizeof(int));
+	//assert(array != NULL);
+	if (array == NULL)
+	{
+		return NULL;
+	}
+
+	/*
+		从标准输入获得整数值
+	*/
+
+	while (scanf("%d", &value) == 1)
+	{
+		count += 1;
+
+		//考虑是否需要扩容,来存储更多的输入值
+		if (count > size)
+		{
+			size += DETAL;
+			array = (int*)realloc(array, (size + 1) * sizeof(int));
+			//assert(array != NULL);
+			if (array == NULL)
+			{
+				return NULL;
+			}
+		}
+		array[count] = value;
+		
+	}
+
+	/*
+		合理管理动态分配的内存：
+		使用realloc改变数组的长度，使其刚好可以存储（包括计数值，得加1）
+		再返回数组
+	*/
+	if (size > count)
+	{
+		array = (int*)realloc(array, (count + 1) * sizeof(int));
+	}
+	array[0] = count;
+	return array;
+
+}
+
+
+/*
+	练习2：
+	从标准输入中读取一个字符串， 把字符串复制到动态分配的内存中，返回该字符串的拷贝！
+	并且不对该读入字符串的长度做任何限制！
+
+*/
+
+char* ReadString()
+{
+
+	static char* buffer = NULL;	//输入缓冲区
+	static int buffer_size = 0;	//缓冲区的大小
+	char* bp;		//返回拷贝的字符串
+	int len;		//输入字符串的长度
+	char ch;		//输入的字符
+	len = 0;
+	bp = buffer;
+	buffer_size = DETAL;
+	buffer = (char*)malloc((buffer_size ) * sizeof(char));
+	assert(buffer!=NULL);
+
+	/*
+		一次获取一个字符，直到读取换行符'\n'或EOF已到达。
+	*/
+	do {
+		ch = getchar();
+		if (ch == '\n' || ch == EOF)
+		{
+			ch = '\0';
+		}
+		if (len > buffer_size)
+		{
+			buffer_size += DETAL ;
+			buffer = (char*)realloc(buffer, (buffer_size) * sizeof(char));//buffer_size+1是为了存储最后一个\0字符
+			assert(buffer != NULL);
+			buffer += len;
+		}
+		//*buffer++ = ch;//vs下出错
+		buffer[len] = ch;
+		len++;
+
+	} while (ch!='\0');
+	
+	bp = (char*)malloc(len * sizeof(char));
+	assert(bp != NULL);
+	strcpy(bp, buffer);
+	return bp;
+
+}
+
+//以下这种情况，VS出现乱码
+char* ReadString2()
+{
+
+	static char* buffer = NULL;	//输入缓冲区
+	static int buffer_size = 0;	//缓冲区的大小
+	char* bp;		//返回拷贝的字符串
+	int len;		//输入字符串的长度
+	int ch;		//输入的字符
+	len = 0;
+	bp = buffer;
+
+	/*
+		一次获取一个字符，直到读取换行符'\n'或EOF已到达。
+	*/
+	do {
+		ch = getchar();
+		if (ch == '\n' || ch == EOF)
+		{
+			ch = '\0';
+		}
+		//如果缓冲区填充满了，则扩容
+		if (len >= buffer_size)
+		{
+			buffer_size += DETAL;
+			buffer = (char*)realloc(buffer, buffer_size);
+			assert(buffer != NULL);
+			buffer += len;//每次扩容，则移动至下一输入空白处，避免每次读取字符串时，从头开始，动态增加数组的开销。
+		}
+		*buffer = ch;
+		buffer++;
+		len++;
+
+	} while (ch != '\0');
+
+	//返回复制的字符串
+	bp = (char*)malloc(len);
+	assert(bp != NULL);
+	strcpy(bp, buffer);
+	return bp;
+
+}
+
+
+
+
 int main()
 {
+
+	/*int* ps = ReadInts();
+	int i = 0;
+	for (i = 0; i <= ps[0]; i++)
+	{
+		printf("%d ", ps[i]);
+	}*/
+	printf("%s\n",ReadString());
+	//free(ReadString());
+	
 	//test1();
 	//test2();
 	//test3();
@@ -282,8 +464,8 @@ int main()
 	//Test1();
 	//Test2();
 	//Test3();
-	Test4();
-
+	//Test4();
+	//flexible_array();
 
 
 

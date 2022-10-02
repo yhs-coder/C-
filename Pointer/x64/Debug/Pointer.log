@@ -1,0 +1,3 @@
+﻿  Test.c
+D:\代码库\github\Pointer\Pointer\Test.c(909,1): warning C4047: “初始化”:“char ***”与“char **(*)[4]”的间接级别不同
+  Pointer.vcxproj -> D:\代码库\github\Pointer\x64\Debug\Pointer.exe

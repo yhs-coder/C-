@@ -1,0 +1,9 @@
+﻿  Test.c
+D:\代码库\github\Pointer\Pointer\Test.c(659,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\代码库\github\Pointer\Pointer\Test.c(671,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\代码库\github\Pointer\Pointer\Test.c(673,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\代码库\github\Pointer\Pointer\Test.c(794,26): warning C4047: “函数”:“const char *”与“char **”的间接级别不同
+D:\代码库\github\Pointer\Pointer\Test.c(794,24): warning C4024: “strlen”: 形参和实参 1 的类型不同
+D:\代码库\github\Pointer\Pointer\Test.c(795,30): warning C4047: “函数”:“const char *”与“char **”的间接级别不同
+D:\代码库\github\Pointer\Pointer\Test.c(795,27): warning C4024: “strlen”: 形参和实参 1 的类型不同
+  Pointer.vcxproj -> D:\代码库\github\Pointer\Debug\Pointer.exe

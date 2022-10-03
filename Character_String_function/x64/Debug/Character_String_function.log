@@ -1,0 +1,5 @@
+﻿  Test.c
+D:\代码库\github\Character_String_function\Character_String_function\Test.c(455,16): warning C4090: “=”: 不同的“const”限定符
+D:\代码库\github\Character_String_function\Character_String_function\Test.c(383): warning C4716: “my_strcpy”: 必须返回一个值
+D:\代码库\github\Character_String_function\Character_String_function\Test.c(469): warning C4715: “my_strstr”: 不是所有的控件路径都返回值
+  Character_String_function.vcxproj -> D:\代码库\github\Character_String_function\x64\Debug\Character_String_function.exe
